@@ -137,6 +137,6 @@ VIC-Res development is supported by Singapore's Ministry of Education (MoE) via 
 
 For questions and feedback related to VIC-ResOpt—and requests to fix possible bugs—please send an email to thanhiwer@gmail.com (Thanh Dang), Resilient Water Systems Group, Singapore University of Technology and Design, Singapore.
 
-### Note
+If you use VIC-Res, please cite the following paper:
 
-This software package is under-development and it is submitted together with a manuscript for the reviewing process on Environmental Modeling & Software journal. 
+T.D. Dang, T.D., Vu, A.K. Chowdhury, and S. Galelli. A software package for the representation and optimization of water reservoir operations in the VIC hydrologic model. Environmental Modeling & Software (accepted).
