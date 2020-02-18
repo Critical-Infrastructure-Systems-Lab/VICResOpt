@@ -131,7 +131,7 @@ VIC-ResOpt is demonstrated via two case studies
 
 ## Acknowledgments
 
-VIC-Res development is supported by Singapore's Ministry of Education (MoE) via the Tier 2 project "Linking water availability to hydropower supply-an engineering system approach" (Award No. MOE2017-T2-1-143).
+VIC-ResOpt development is supported by Singapore's Ministry of Education (MoE) via the Tier 2 project "Linking water availability to hydropower supply-an engineering system approach" (Award No. MOE2017-T2-1-143).
 
 ### Contact
 
