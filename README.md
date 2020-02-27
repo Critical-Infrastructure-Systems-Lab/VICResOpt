@@ -141,4 +141,4 @@ For questions and feedback related to VIC-ResOpt—and requests to fix possible bu
 
 If you use VIC-ResOpt, please cite the following paper:
 
-T.D. Dang, T.D., Vu, A.K. Chowdhury, and S. Galelli. A software package for the representation and optimization of water reservoir operations in the VIC hydrologic model. Environmental Modeling & Software, 2020 (accepted).
+T.D. Dang, T.D., Vu, A.K. Chowdhury, and S. Galelli. A software package for the representation and optimization of water reservoir operations in the VIC hydrologic model. Environmental Modeling & Software, 2020, 126: 104673.
