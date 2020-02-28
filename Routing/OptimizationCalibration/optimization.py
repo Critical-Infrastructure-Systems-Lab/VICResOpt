@@ -6,6 +6,8 @@
 # Version: 1.0 24 Oct 2019
 # Change links and filenames where appropriate
 # Require the following libs
+# ------------------------------------------------------------------------------------------------------------------------------------------------
+
 from platypus import EpsNSGAII, Problem, Real, ProcessPoolEvaluator, Hypervolume, nondominated
 import os
 import csv
@@ -358,3 +360,5 @@ print("End",end)
 print("Finish running simulations! See opt_objectives.txt and opt_variables.txt for results.")
 np.savetxt("optimization_objectives.txt",[s.objectives[:] for s in nondominated_solutions],fmt="%s")
 np.savetxt("optimization_variables.txt",[s.variables[:] for s in nondominated_solutions],fmt="%s")
+# END OF FILE
+# ------------------------------------------------------------------------------------------------------------------------------------------------ 

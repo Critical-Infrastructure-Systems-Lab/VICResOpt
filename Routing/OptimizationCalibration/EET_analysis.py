@@ -7,6 +7,7 @@
 # Saltelli, A., Tarantola, S. and Chan, K.P.S. (1999), A Quantitative Model-Independent Method for Global Sensitivity Analysis of Model Output, 
 #Technometrics, 41(1), 39-56.
 # Modify all links if change the current folder tree
+# 28/02/2020 fix errors related to the 3rd soil layer
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 
 import numpy as np
@@ -63,17 +64,22 @@ def viccall(soildata,rank,order,number_of_days):								# Modify when needed
                              sl[18] = soildata[order][count_no]					#d1
                         elif (k==6):
                              sl[19] = soildata[order][count_no]					#d2
-                        elif ((k==7) and (no_of_row==42)):
+                        elif ((k==7) and (no_of_row==53)):
                              sl[20] = soildata[order][count_no]					#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
                         count_no+=1
-                if (no_of_row ==42):
-                    my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
-                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],sl[31],sl[32],
-                    sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40],sl[41]))         # 3 layers
+                if (no_of_row ==53):											#3-layer soil - not test yet, if there are any errors, modify Lines 71
+                    my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
+                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],
+                    sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],
+                    sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],
+                    sl[31],sl[32],sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40],
+                    sl[41],sl[42],sl[43],sl[44],sl[45],sl[46],sl[47],sl[48],sl[49],sl[50],sl[51],sl[52]))		# 3 layers
                 else:
                     my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
-                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],sl[31],sl[32],
-                    sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40])) 		  		 # 2 layers
+                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],
+                    sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],
+                    sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],
+                    sl[31],sl[32],sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40]))						# 2 layers
     os.chdir('../RoutingSetup')
     text_file = open('configuration.txt','r')									# Modify flow routing file
     lines = text_file.read().splitlines()    									# 1st running, lines in the configuration file does not contain \n
@@ -208,8 +214,8 @@ os.chdir('../../RoutingSetup')
 text_file = open('reservoirEET.txt','r')
 lines = text_file.read().split('\n')
 number_of_days = int(lines[2].split('\t')[0])					# Number of simulation days in VIC
-spinning_period = int(lines[3].split('\t')[0])					# Ignore the a number of days in VIC simulation for the warm-up period	
-number_of_cores = int(lines[4].split('\t')[0])					# number of computer cores	
+spinning_period = int(lines[3].split('\t')[0])					# Ignore the a number of days in VIC simulation for the warm-up period
+number_of_cores = int(lines[4].split('\t')[0])					# number of computer cores
 rEET = int(lines[5].split('\t')[0])								# Number of sampling points
 VIC_fitness = [0 for x in range(2)]
 for i in range(2):												# 2 fitness functions considered
@@ -347,19 +353,19 @@ if (maximum_no_reservoirs>0):
             rowcount+=1
         elif (reservoirs[i][1]==5):
             for j in range(12):
-                X[:,rowcount]*=math.pi/2																# x1
+                X[:,rowcount]*=math.pi/2															# x1
                 xmin.append(0)
                 xmax.append(math.pi/2)
                 rowcount+=1
-                X[:,rowcount]=(reservoirs[i][2]-reservoirs[i][3])*X[:,rowcount]+reservoirs[i][3]		# x2
+                X[:,rowcount]=(reservoirs[i][2]-reservoirs[i][3])*X[:,rowcount]+reservoirs[i][3]	# x2
                 xmin.append(reservoirs[i][3])
                 xmax.append(reservoirs[i][2])
                 rowcount+=1
-                X[:,rowcount]=(reservoirs[i][2]-reservoirs[i][3])*X[:,rowcount]+reservoirs[i][3]		# x3
+                X[:,rowcount]=(reservoirs[i][2]-reservoirs[i][3])*X[:,rowcount]+reservoirs[i][3]	# x3
                 xmin.append(reservoirs[i][3])
                 xmax.append(reservoirs[i][2])
                 rowcount+=1
-                X[:,rowcount]*=math.pi/2																# x4
+                X[:,rowcount]*=math.pi/2															# x4
                 xmin.append(0)
                 xmax.append(math.pi/2)
                 rowcount+=1

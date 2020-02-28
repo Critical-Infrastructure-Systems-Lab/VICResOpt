@@ -6,6 +6,7 @@
 # Version: 1.0 23 Oct 2019
 # Change links and filenames where appropriate
 # Require the following libs
+# 28/02/2020 fix errors related to the 3rd soil layer
 from platypus import EpsNSGAII, Problem, Real, ProcessPoolEvaluator, Hypervolume, nondominated
 import os
 import csv
@@ -24,7 +25,7 @@ def viccall(vars):
     # Starting the process - locating resources based on CPU (parallel computing - distributed sources)
     rank = multiprocessing.current_process()._identity[0]
     print("-----------------------------------------------------------------------------------")
-    print("Thread no: ",rank," out of ",multiprocessing.cpu_count())    
+    print("Thread no: ",rank," out of ",multiprocessing.cpu_count())
 
     # Modify VIC parameters
     os.chdir('../Rainfall-runoffSetup/')											# Modify when needed, for parallel modelling, create Folder called Core+str(rank)
@@ -69,20 +70,25 @@ def viccall(vars):
                         elif (k==6):
                             sl[19] = vars[count_no]									#d2
                             count_no+=1
-                        elif ((k==7) and (no_of_row==43)):
-                            sl[20] = vars[count_no]									#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
-                            count_no+=1
-                if (no_of_row ==42):
-                    my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
-                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],sl[31],sl[32],
-                    sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40],sl[41]))         # 3 layers
-                else:
+                        elif ((k==7) and (no_of_row==53)):
+                            sl[25] = vars[count_no]									#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
+                            count_no+=1												# 2-layer soil = 41; 3-layer soi; = 53
+                if (no_of_row==53):													#3-layer soil - not test yet, if there are any errors, modify Lines 77
+                    my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
+                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],
+                    sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],
+                    sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],
+                    sl[31],sl[32],sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40],
+                    sl[41],sl[42],sl[43],sl[44],sl[45],sl[46],sl[47],sl[48],sl[49],sl[50],sl[51],sl[52]))		# 3 layers
+                else:																#2-layer soil
                     my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
-                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],sl[31],sl[32],
-                    sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40])) 		  		 # 2 layers
+                    %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],
+                    sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],
+                    sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],
+                    sl[31],sl[32],sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40]))						# 2 layers
     os.chdir('../RoutingSetup')
     text_file = open('configuration.txt','r')										# Modify flow routing file
-    lines = text_file.read().splitlines()    										# 1st running, lines in the configuration file does not contain \n
+    lines = text_file.read().splitlines()											# 1st running, lines in the configuration file does not contain \n
     if (len(lines)<5):
         lines = text_file.read().split('\n')
     with open('configuration.txt','w') as my_csv:									# Modify when needed
@@ -106,7 +112,7 @@ def viccall(vars):
     os.chdir('../../Rainfall-runoff')												# Modify when needed
     os.system('./vicNl -g ../Rainfall-runoffSetup/globalparam.txt') 	 			# Modify when needed
     files = [f for f in os.listdir("../Rainfall-runoffSetup/Results") if os.path.isfile(os.path.join("../Rainfall-runoffSetup/Results",f))]
-    for file in files:             													# Change the name of VIC file (for VIC 4.2)
+    for file in files:             													# Change the name of VIC file (convert from X - Y to Y - X)
         if (len(file)>=22):
             if (len(file)==22):
                 coorX = file[7:14]
@@ -114,8 +120,8 @@ def viccall(vars):
             else:
                 coorX = file[7:15]
                 coorY = file[16:23]
-            newfile = "../RoutingSetup/input/fluxes_"+coorY+"_"+coorX       		# Modify when needed
-            file = "../Rainfall-runoffSetup/Results/" + file            			# Modify when needed
+            newfile = "../RoutingSetup/input/fluxes_"+coorY+"_"+coorX				# Modify when needed
+            file = "../Rainfall-runoffSetup/Results/" + file						# Modify when needed (this is only correct if you use the provided VIC version)
             os.rename(file,newfile)
 
     # Run routing model																# Modify when needed
@@ -302,3 +308,5 @@ print("Finish running simulations! See opt_objectives.txt and opt_variables.txt 
 np.savetxt("calibration_objectives.txt",[s.objectives[:] for s in nondominated_solutions],fmt="%s")
 np.savetxt("calibration_variables.txt",[s.variables[:] for s in nondominated_solutions],fmt="%s")
 print(x)
+# END OF FILE
+# ------------------------------------------------------------------------------------------------------------------------------------------------ 
