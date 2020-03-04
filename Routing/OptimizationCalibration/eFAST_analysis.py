@@ -11,7 +11,7 @@
 #    Model-Independent Method for Global Sensitivty Analysis of Model Output,
 #    Technometrics, 41(1), 39-56.
 # Modify all links if change the current folder tree
-# 28/02/2020 fix errors related to the 3rd soil layer
+# 03/03/2020 fix errors related to the 3rd soil layer
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 
 import numpy as np
@@ -37,11 +37,11 @@ def viccall(soildata,rank,order,number_of_days):
     text_file = open('soil.txt','r')
     lines = text_file.read().split('\n')
     global VIC_vars
-    no_of_row = len(lines[0])
+    no_of_col = len(lines[0].split('\t'))
     countno = 0
-    soilparam = [[0 for x in range(no_of_row)] for y in range(len(lines))]
+    soilparam = [[0 for x in range(no_of_col)] for y in range(len(lines))]
     for line in lines:
-        for i in range(no_of_row):
+        for i in range(no_of_col):
              try:
                 soilparam[countno][i] = float(line.split('\t')[i])
              except:
@@ -65,13 +65,19 @@ def viccall(soildata,rank,order,number_of_days):
                         elif (k==4):
                              sl[8] = soildata[order][count_no]					#c
                         elif (k==5):
-                             sl[18] = soildata[order][count_no]					#d1
+                            if (no_of_col==53): 
+                                sl[22] = soildata[order][count_no]				#d1
+                            else:
+                                sl[18] = soildata[order][count_no]				#d1
                         elif (k==6):
-                             sl[19] = soildata[order][count_no]					#d2
-                        elif ((k==7) and (no_of_row==53)):
-                             sl[20] = soildata[order][count_no]					#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
+                            if (no_of_col==53): 
+                                sl[23] = soildata[order][count_no]				#d2
+                            else:
+                                sl[19] = soildata[order][count_no]				#d2
+                        elif ((k==7) and (no_of_col==53)):
+                             sl[24] = soildata[order][count_no]					#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
                         count_no+=1
-                if (no_of_row ==53):											#3-layer soil - not test yet, if there are any errors, modify Lines 75
+                if (no_of_col==53):												#3-layer soil - not test yet, if there are any errors, modify Lines 75
                     my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
                     %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],
                     sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],

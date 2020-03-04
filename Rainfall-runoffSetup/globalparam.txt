@@ -42,7 +42,7 @@ ALMA_INPUT		FALSE							# TRUE = ALMA-compliant input variable units; FALSE = st
 # Land Surface Files and Parameters
 ##############################################################
 SOIL           		../Rainfall-runoffSetup/soil.txt			# Soil parameter path/file
-NLAYER			2							# number of soil layers
+NLAYER			3							# number of soil layers
 NODES			3							# number of soil thermal nodes 
 ARC_SOIL        	FALSE  							# TRUE = read soil parameters from ARC/INFO ASCII grids
 BASEFLOW		ARNO   							# ARNO = columns 5-8 are the standard VIC baseflow parameters; NIJSSEN2001 = columns 5-8 of soil file are baseflow parameters from Nijssen et al (2001)

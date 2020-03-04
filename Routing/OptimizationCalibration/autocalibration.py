@@ -6,13 +6,14 @@
 # Version: 1.0 23 Oct 2019
 # Change links and filenames where appropriate
 # Require the following libs
-# 28/02/2020 fix errors related to the 3rd soil layer
+# 03/03/2020 fix errors related to the 3rd soil layer
 from platypus import EpsNSGAII, Problem, Real, ProcessPoolEvaluator, Hypervolume, nondominated
 import os
 import csv
 import numpy as np
 import multiprocessing
 import datetime
+import time
 
 # Function to call VIC
 def viccall(vars):
@@ -32,17 +33,16 @@ def viccall(vars):
     text_file = open('soil.txt','r')												# Modify when needed
     lines = text_file.read().split('\n')
     count_no = 0
-    no_of_row = len(lines[0])
-    soilparam = [[0 for x in range(no_of_row)] for y in range(len(lines))]
+    no_of_col = len(lines[0].split('\t'))
+    soilparam = [[0 for x in range(no_of_col)] for y in range(len(lines))]
     for line in lines:
-        for i in range(0,no_of_row):
-             try:   
+        for i in range(0,no_of_col):
+             try:
                 soilparam[count_no][i] = float(line.split('\t')[i])
              except:
                 print("...")														# Ignore lines with errors
         count_no+=1
     text_file.close()
-    
     with open('soil.txt','w') as my_csv:											# Modify soil file
         for sl in soilparam:
             if (sl[2]!=0):															#Avoid add more row if the last row is blank
@@ -65,15 +65,23 @@ def viccall(vars):
                             sl[8] = vars[count_no]									#c
                             count_no+=1
                         elif (k==5):
-                            sl[18] = vars[count_no]									#d1
+                            if (no_of_col==53): 
+                                sl[22] = vars[count_no]								#d1
+                            else:
+                                sl[18] = vars[count_no]								#d1
                             count_no+=1
                         elif (k==6):
-                            sl[19] = vars[count_no]									#d2
+                            if (no_of_col==53): 
+                                sl[23] = vars[count_no]								#d2
+                            else:
+                                sl[19] = vars[count_no]								#d2
                             count_no+=1
-                        elif ((k==7) and (no_of_row==53)):
-                            sl[25] = vars[count_no]									#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
+                        elif ((k==7) and (no_of_col==53)):
+                            sl[24] = vars[count_no]									#d3 (in case the VIC model has more than 3 layers; modify this Python code accordingly)
                             count_no+=1												# 2-layer soil = 41; 3-layer soi; = 53
-                if (no_of_row==53):													#3-layer soil - not test yet, if there are any errors, modify Lines 77
+                #print('No of line:',no_of_col)										# to check when neccessary
+                #time.sleep(10000)
+                if (no_of_col==53):													#3-layer soil - not test yet, if there are any errors, modify Lines 77
                     my_csv.write("%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\t%i\t%i\t%i\t%i\t%i\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%i\r\n"
                     %(sl[0],sl[1],sl[2],sl[3],sl[4],sl[5],sl[6],sl[7],sl[8],sl[9],sl[10],
                     sl[11],sl[12],sl[13],sl[14],sl[15],sl[16],sl[17],sl[18],sl[19],sl[20],
