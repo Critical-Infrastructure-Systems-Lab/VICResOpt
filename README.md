@@ -19,6 +19,10 @@ The sensitivity analysis requires the Sensitivity Analysis for Everybody ([SAFE]
 
 VIC-ResOpt has been tested on Linux Ubuntu 14.04 LTS (Trusty Tahr) and 16.04 (Xenial Xerus) operating systems.
 
+### Major Update
+
+10 Mar 2020: rename autocalibration.py to autocalieNSGAII.py; add indices.py and functions.py; fix 3L-soil layer problem.
+
 ### How to run
 
 **A. How to run the reservoir component of VIC-ResOpt**

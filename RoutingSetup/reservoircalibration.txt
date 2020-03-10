@@ -2,8 +2,8 @@
 # Simulation parameters
 2130	# Number of simulation days
 365	# Number of days for the spinning period
-250	# Number of function evaluations
-5	# Population size
+2000	# Number of function evaluations
+10	# Population size
 1	# Number of cores
 # VIC model parameters (1 - on; 0 - off)
 1	# Variable infiltration curve parameter b
@@ -16,8 +16,8 @@
 0	# Thickness of 3rd soil mositure layer Depth 3
 0	# Wave velocity in the channel routing (m/s)
 0	# Diff diffusivity in the channel routing (m2/s)
-# Objective functions
+# Objective functions (1 - on; 0 - off)
 1	# NSE
 1	# TRMSE
-1	# MSDE
-1	# ROSE
+0	# MSDE
+0	# ROCE
