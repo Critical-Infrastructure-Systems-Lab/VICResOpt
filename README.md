@@ -30,7 +30,7 @@ VIC-ResOpt has been tested on Linux Ubuntu 14.04 LTS (Trusty Tahr) and 16.04 (Xe
 
 This task can be carried out through the following steps:
 
-1 Download/compile the source code (by using GNU and G77)
+1 Download/compile the source code (by using GNU and G77/GFORTRAN)
 
 2 Prepare the input files:
 
