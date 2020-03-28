@@ -21,8 +21,8 @@ VIC-ResOpt has been tested on Linux Ubuntu 14.04 LTS (Trusty Tahr) and 16.04 (Xe
 
 ### Major Update
 
-28 Mar 2020: add viccall.py to call VIC and Rout together.
-10 Mar 2020: rename autocalibration.py to autocalieNSGAII.py; add indices.py and functions.py; fix 3L-soil layer bug.
+* 28 Mar 2020: add viccall.py to call VIC and Rout together.
+* 10 Mar 2020: rename autocalibration.py to autocalieNSGAII.py; add indices.py and functions.py; fix 3L-soil layer bug.
 
 ### How to run
 
