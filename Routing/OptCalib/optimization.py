@@ -183,6 +183,7 @@ def viccall(vars):
     dischargers = [[0 for x in range(maximum_no_reservoirs)] for y in range(number_of_days)]
     for i in range(maximum_no_reservoirs):
         monthth = 0
+        countrow = 0
         with open('../Results/reservoir_'+str(reservoirs[i][0])+'.day','r') as my_csv: 
             lines = my_csv.read().split('\n')
             for line in lines:
@@ -190,9 +191,9 @@ def viccall(vars):
                     produce = 0
                     if (countrow>spinning_period):
                         list_so = list(filter(None,line.split()))
-                        produce = float(list_so[6])
-                        dischargers[countrow][0]=float(list_so[4]) + float(list_so[5])
-                        waterdeviation+=abs(float(list_so[3])-reservoirwaterlevel[int(countrow%365)][i])
+                        produce = float(list_so[5])
+                        dischargers[countrow][0]=float(list_so[3]) + float(list_so[4])
+                        waterdeviation+=abs(float(list_so[1])-reservoirwaterlevel[int(countrow%365)][i])
                     if (countrow>0):
                         if (VICdata[countrow][1]!=VICdata[countrow-1][1]):
                             monthth+=1
