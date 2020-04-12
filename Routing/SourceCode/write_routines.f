@@ -26,11 +26,11 @@ c     RCS ID STRING
       REAL          SEEPAGE, INFILTRATION
       REAL          RES_EVAPORATION(200,DAYS)
       REAL          HRESERMAX, HRESERMIN
-      REAL          QRESER,VRESER,HPHATDIEN,QSPILL,QTUR,VDEAD
+      REAL          QRESER,VRESER,HPHATDIEN,QSPILL,QTUR,VDEAD,VINI
       REAL          X1,X2,X3
       REAL          FLOW(DAYS)
       REAL          FACTOR_SUM
-      CHARACTER*200 TEMPRPATH
+      CHARACTER*200 TEMPRPATH, ABC
       CHARACTER*72  RPATH
       CHARACTER*20  CHUOI
       CHARACTER*5   NAME5
@@ -52,11 +52,12 @@ c     Subroutine main body
      &      STATUS='OLD')
             READ(25,*)
             READ(25,*) HRESERMAX, HRESERMIN, VRESER, VDEAD, HPHATDIEN,
-     &      QRESER, NAM, TENHO
+     &      QRESER, NAM, VINI, TENHO
             READ(25,*)
             READ(25,*) SEEPAGE, INFILTRATION
             READ(25,*)
             READ(25,*) RULE
+            CLOSE(25)
             WRITE(CHUOI,*) RES_DIRECT(I,1)
             OPEN(40, FILE = OUTPATH(1:CLEN)//'reservoir_'
      &       //trim(ADJUSTL(CHUOI))//'.day')

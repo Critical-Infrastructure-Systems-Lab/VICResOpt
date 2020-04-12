@@ -789,6 +789,7 @@ c    Initiate reservoir parameters
        ELSE IF (RULE(J) .EQ. 2) THEN ! rule curve
             READ(25,*) RESLV(J,1), RESLV(J,2), RESLV(J,3), RESLV(J,4), RESLV(J,5), RESLV(J,6),
      & RESLV(J,7), RESLV(J,8), RESLV(J,9), RESLV(J,10), RESLV(J,11), RESLV(J,12)
+            CLOSE(25)
        ELSE IF (RULE(J) .EQ. 3) THEN ! operating rule
             READ(25,*) Demand(J), X1(J), X2(J), X3(J), X4(J)
             CLOSE(25)
