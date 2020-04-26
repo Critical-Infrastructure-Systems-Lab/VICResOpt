@@ -14,7 +14,7 @@ import numpy as np
 import multiprocessing
 import datetime
 import time
-from indices import NSE3,TRMSE3,MSDE,ROCE
+from indices import NSE,TRMSE,MSDE,ROCE
 
 # Function to call VIC
 def viccall(vars):
@@ -35,6 +35,7 @@ def viccall(vars):
     lines = text_file.read().split('\n')
     count_no = 0
     no_of_col = len(lines[0].split('\t'))
+
     soilparam = [[0 for x in range(no_of_col)] for y in range(len(lines))]
     for line in lines:
         for i in range(0,no_of_col):
@@ -44,6 +45,7 @@ def viccall(vars):
                 print("...")														# Ignore lines with errors
         count_no+=1
     text_file.close()
+
     with open('soil.txt','w') as my_csv:											# Modify soil file
         for sl in soilparam:
             if (sl[2]!=0):															#Avoid add more row if the last row is blank
@@ -96,10 +98,12 @@ def viccall(vars):
                     sl[21],sl[22],sl[23],sl[24],sl[25],sl[26],sl[27],sl[28],sl[29],sl[30],
                     sl[31],sl[32],sl[33],sl[34],sl[35],sl[36],sl[37],sl[38],sl[39],sl[40]))						# 2 layers
     os.chdir('../RoutingSetup')
+
     text_file = open('configuration.txt','r')										# Modify flow routing file
     lines = text_file.read().splitlines()											# 1st running, lines in the configuration file does not contain \n
     if (len(lines)<5):
         lines = text_file.read().split('\n')
+    text_file.close()
     with open('configuration.txt','w') as my_csv:									# Modify when needed
         for i in range(31):
             if ((i==5) and (VIC_vars[8]>0)):
@@ -110,7 +114,6 @@ def viccall(vars):
                 count_no+=1
             else:
                 my_csv.write("%s\n"%(lines[i]))
-    text_file.close() 
 
     # Run rainfall-runoff model and change filename
     os.chdir('../Rainfall-runoffSetup/Results')										# Modify when needed
@@ -156,17 +159,21 @@ def viccall(vars):
     text_file = open('../Results/OUTLE.day','r')									# Modify when needed
     lines = text_file.read().split('\n')
     count_no = 0
-    VIC_data = [[0 for x in range(4)] for y in range(number_of_days)]
+    VIC_time = [[0 for x in range(3)] for y in range(number_of_days)]
+    VIC_release = [0 for x in range(number_of_days)]
     for line in lines:
         try:
-           year,month,day,flows = filter(None,line.split(' '))
-           VIC_data[count_no][0] = year
-           VIC_data[count_no][1] = month
-           VIC_data[count_no][2] = day
-           VIC_data[count_no][3] = float(flows)
-           count_no+=1
+            year,month,day,flows = filter(None,line.split(' '))
+            VIC_time[count_no][0] = year
+            VIC_time[count_no][1] = month
+            VIC_time[count_no][2] = day
+            VIC_release[count_no] = float(flows)
+            if (VIC_release[count_no]<0):
+                VIC_release[count_no] = -1											# If there is a negative flow, set to -1
+            count_no+=1
         except:
-            print("...")															# Ignore lines with errors
+            if (count_no<number_of_days):
+                VIC_release[count_no][3] = -1 											# Ignore lines with errors
     text_file.close()
 
     # Calculate objective functions (NSE, TRMSE, MSDE, ROSE)
@@ -180,10 +187,11 @@ def viccall(vars):
     for i in range(spinning_period,number_of_days):
         zobs = (pow((abs(gaudata[i])+1),0.3)-1)/0.3
         nortrmse+=pow(zobs-meangautrmse,2)
-    nash = NSE3(gaudata[spinning_period:number_of_days],VIC_data[spinning_period:number_of_days],3)				# 3 = discharge (see line 166)
-    trmse = TRMSE3(gaudata[spinning_period:number_of_days],VIC_data[spinning_period:number_of_days],3)
-    msde = MSDE(gaudata[spinning_period:number_of_days],VIC_data[spinning_period:number_of_days],3)
-    roce= ROCE(gaudata[spinning_period:number_of_days],VIC_data[spinning_period:number_of_days],3)
+    nash = NSE(gaudata[spinning_period:number_of_days],VIC_release[spinning_period:number_of_days])
+    trmse = TRMSE(gaudata[spinning_period:number_of_days],VIC_release[spinning_period:number_of_days])
+    msde = MSDE(gaudata[spinning_period:number_of_days],VIC_release[spinning_period:number_of_days])
+    roce= ROCE(gaudata[spinning_period:number_of_days],VIC_release[spinning_period:number_of_days])
+
 #   Normalized NSE
     if nash<=0:
         standnash = 1
@@ -235,6 +243,7 @@ spinning_period = int(lines[3].split('\t')[0])
 number_functions = int(lines[4].split('\t')[0])
 pop_size = int(lines[5].split('\t')[0])
 number_of_core = int(lines[6].split('\t')[0])
+text_file.close()
 VIC_vars = [0 for x in range(10)]
 VIC_objs = [0 for x in range(4)]
 no_of_var = 0

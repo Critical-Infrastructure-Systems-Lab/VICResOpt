@@ -1,6 +1,6 @@
 # Configuration file: automatic calibration for the Variable Infiltration Capacity model based on Multi-Objective Evolutionary Algorthms (MOEAs)
 # Simulation parameters
-2130	# Number of simulation days
+2100	# Number of simulation days
 365	# Number of days for the spinning period
 2000	# Number of function evaluations
 10	# Population size
