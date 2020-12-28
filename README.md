@@ -108,6 +108,7 @@ The reservoir location is stored in the file *reservoirlocation.txt*, which has 
 * '1' - '9998' represent the ID of reservoirs/dams
 * '9999' represents open water surface (reservoir cells)
 * '0' refers to other land use
+
 Note: avoid using No. (n+1) for reservoir name (n is the number of reservoirs) because this is used for the basin outlet.
 
 Operation of water reservoirs:
