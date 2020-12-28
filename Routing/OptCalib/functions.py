@@ -102,7 +102,9 @@ def viccall(soildata,rank,order,number_of_days,VIC_vars,reservoirs,maximum_no_re
             resname = lines[1].split('\t')[8]
             seepage = float(lines[3].split('\t')[0])
             infil = float(lines[3].split('\t')[1])
-            opt = int(lines[5].split('\t')[0])
+            irrigation = int(lines[5].split('\t')[0])
+            irripath = lines[6].split('\t')[0]
+            opt = int(lines[8].split('\t')[0])
             if (opt==3):
                 D4demand = float(lines[6].split('\t')[0])
             elif (opt==5):
@@ -115,6 +117,9 @@ def viccall(soildata,rank,order,number_of_days,VIC_vars,reservoirs,maximum_no_re
                     my_csv.write("%f\t%f\t%f\t%f\t%f\t%f\t%i\t%f\t%s\n"%(hmax,hmin,volume,dvolume,height,discharge,yearopt,initialvolume,resname))
                     my_csv.write("SEEPAGE	INFILTRATION\n")
                     my_csv.write("%f\t%f\n"%(seepage,infil))
+                    my_csv.write("IRRIGATION")
+                    my_csv.write("%i\n"%(irrigation))
+                    my_csv.write("%s\n"%(irripath))
                     my_csv.write("OPERATION STRATEGY\n")
                     my_csv.write(str(opt)+"\n")
                     if (opt==1):

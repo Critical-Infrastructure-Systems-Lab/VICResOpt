@@ -21,6 +21,7 @@ VIC-ResOpt has been tested on Linux Ubuntu 14.04 LTS (Trusty Tahr) and 16.04 (Xe
 
 ### Major Update
 
+* 28 Dec 2020: fix dead storage bug; add water withdrawal (permanent loss) due to irrigation activities.
 * 17 May 2020: add multicalieNSGAII.py for multi-site calibration.
 * 28 Mar 2020: add viccall.py to call VIC and Rout together; add autocaliSCE.py for automatic calibration with SCE-UA.
 * 10 Mar 2020: rename autocalibration.py to autocalieNSGAII.py; add indices.py and functions.py; fix 3L-soil layer bug.
@@ -107,6 +108,7 @@ The reservoir location is stored in the file *reservoirlocation.txt*, which has 
 * '1' - '9998' represent the ID of reservoirs/dams
 * '9999' represents open water surface (reservoir cells)
 * '0' refers to other land use
+Note: avoid using No. (n+1) for reservoir name (n is the number of reservoirs) because this is used for the basin outlet.
 
 Operation of water reservoirs:
 For each reservoir (e.g., ID = 1), there is a reservoir configuration file (e.g., *res1.txt*), containing specifications on the maximum water level (*m*), minimum water level (*m*), storage capacity (*1000 m3*), hydraulic head (*m*; optional for the calculation of hydropower production), design discharge (*m3/s*), year of commission, initial water volume (*1,000 m3*), reservoir name, seepage rate (*m3/s*), infiltration rate (*m3/s*), and operation strategy. There are four operating strategies adopted in this software package

@@ -1,9 +1,9 @@
 # Configuration file: sensitivity analysis for VIC model based on Elementary Effects Test (EET)
 # Simulation parameters
-2130	# Number of simulation days
+2130		# Number of simulation days
 365		# Number of days for the spinning period
-200		# Number of cores
-6		# Number of sampling points (r) - choose a large number if you have many parameters
+1		# Number of cores
+100		# Number of sampling points (r) - choose a large number if you have many parameters
 # VIC model parameters (1 - on; 0 - off)
 1		# Variable infiltration curve parameter b
 1		# Fraction of Dmax where non-linear baseflow begin Ds

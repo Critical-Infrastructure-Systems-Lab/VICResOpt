@@ -19,7 +19,7 @@ c     RCS ID STRING
       INTEGER       RES_DIRECT(200,3)
       INTEGER       RESER(NCOL,NROW)
       INTEGER       H(NCOL,NROW)
-      INTEGER       RULE
+      INTEGER       RULE, IRRIGATION
       INTEGER       NO_STAS, NAM
       REAL          VOL(200,DAYS),FLOWIN(200,DAYS),FLOWOUT(200,DAYS)
       REAL          HHO(200,DAYS),HYDROPOWER(200,DAYS),HTK(200,DAYS)
@@ -31,7 +31,7 @@ c     RCS ID STRING
       REAL          FLOW(DAYS)
       REAL          FACTOR_SUM
       CHARACTER*200 TEMPRPATH, ABC
-      CHARACTER*72  RPATH
+      CHARACTER*72  RPATH, IPATH
       CHARACTER*20  CHUOI
       CHARACTER*5   NAME5
       CHARACTER*72  OUTPATH, TENHO
@@ -56,14 +56,18 @@ c     Subroutine main body
             READ(25,*)
             READ(25,*) SEEPAGE, INFILTRATION
             READ(25,*)
+            READ(25,*) IRRIGATION
+            READ(25,*) IPATH
+            READ(25,*)
             READ(25,*) RULE
             CLOSE(25)
             WRITE(CHUOI,*) RES_DIRECT(I,1)
+            print*, 'Exporting data for Reservoir ',TENHO
             OPEN(40, FILE = OUTPATH(1:CLEN)//'reservoir_'
      &       //trim(ADJUSTL(CHUOI))//'.day')
             IF ((RULE .EQ. 1) .OR. (RULE .EQ. 2) .OR. (RULE .EQ. 3) .OR. (RULE .EQ. 5)) THEN
                 WRITE(40,*) 'Volume_1000cm WaterLevel_m Qinflow_cms '
-     &          //'Qspilways_cms Qculvert_cms Energy_MW'
+     &          //'Qspilways_cms Qturbine_cms Energy_MW'
                 DO K = 1, DAYS
                     IF (FLOWOUT(I,K)>QRESER) THEN
                         QSPILL = FLOWOUT(I,K) - QRESER

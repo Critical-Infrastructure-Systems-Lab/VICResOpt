@@ -1,6 +1,6 @@
 # Configuration file: sensitivity analysis for VIC model based on extended Fourier Amplitutde Sensitivity Test (eFAST)
 # Simulation parameters
-2130	# Number of simulation days
+2130		# Number of simulation days
 365		# Number of days for the spinning period
 1		# Number of cores
 # VIC model parameters (1 - on; 0 - off)
