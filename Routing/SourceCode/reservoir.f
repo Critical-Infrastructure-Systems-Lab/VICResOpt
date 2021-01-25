@@ -832,8 +832,8 @@ c       Initiate reservoir parameters
             END IF
             FLOWIN(J,I) = RESFLOWS(J,I)
 c           Calculate the designed water level
-c           Note RULE = 1: simplified rule curve = 2: rule curve = 3: operating rules: =4 pre-defined time-series data
-            CRTDATE = 1.0* mod(I,365)+(START_MO-1)*30						! approcimate
+c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating rules: - 4 pre-defined time-series data - 5 12 month operating rule
+            CRTDATE = 1.0* mod(I,365)+(START_MO-1)*30						! approximate
             IF ((RULE(J) .EQ. 1) .or. (RULE(J) .EQ. 2)) THEN   ! (Options 1 and 2: rule curves)
                 IF (CURRENTYEAR<OPEYEAR(J)) THEN
                     FLOWOUT(J,I) = FLOWIN(J,I)
@@ -876,27 +876,27 @@ c           Note RULE = 1: simplified rule curve = 2: rule curve = 3: operating 
                 END IF
                 DESIGNWL = DESIGNWL + (HMIN(J) - HRESERMIN(J))
             ELSE
-                IF (MOD(I,365) .LE. 31) THEN !jan
+                IF (CRTDATE .LE. 31) THEN !jan
                     DESIGNWL = RESLV(J,1)
-                ELSE IF (MOD(I,365) .LE. 59) THEN ! feb
+                ELSE IF (CRTDATE .LE. 59) THEN ! feb
                     DESIGNWL = RESLV(J,2)
-                ELSE IF (MOD(I,365) .LE. 90) THEN ! mar
+                ELSE IF (CRTDATE .LE. 90) THEN ! mar
                     DESIGNWL = RESLV(J,3)
-                ELSE IF (MOD(I,365) .LE. 120) THEN ! apr
+                ELSE IF (CRTDATE .LE. 120) THEN ! apr
                     DESIGNWL = RESLV(J,4)
-                ELSE IF (MOD(I,365) .LE. 151) THEN ! may
+                ELSE IF (CRTDATE .LE. 151) THEN ! may
                     DESIGNWL = RESLV(J,5)
-                ELSE IF (MOD(I,365) .LE. 181) THEN ! jun
+                ELSE IF (CRTDATE .LE. 181) THEN ! jun
                     DESIGNWL = RESLV(J,6)
-                ELSE IF (MOD(I,365) .LE. 212) THEN ! jul
+                ELSE IF (CRTDATE .LE. 212) THEN ! jul
                     DESIGNWL = RESLV(J,7)
-                ELSE IF (MOD(I,365) .LE. 243) THEN ! aug
+                ELSE IF (CRTDATE .LE. 243) THEN ! aug
                     DESIGNWL = RESLV(J,8)
-                ELSE IF (MOD(I,365) .LE. 273) THEN ! sep
+                ELSE IF (CRTDATE .LE. 273) THEN ! sep
                     DESIGNWL = RESLV(J,9)
-                ELSE IF (MOD(I,365) .LE. 304) THEN ! oct
+                ELSE IF (CRTDATE .LE. 304) THEN ! oct
                     DESIGNWL = RESLV(J,10)
-                ELSE IF (MOD(I,365) .LE. 334) THEN ! nov
+                ELSE IF (CRTDATE .LE. 334) THEN ! nov
                     DESIGNWL = RESLV(J,11)
                 ELSE ! dec
                     DESIGNWL = RESLV(J,12)
@@ -986,68 +986,68 @@ c           Note RULE = 1: simplified rule curve = 2: rule curve = 3: operating 
             GOTO 123
         ELSE IF (RULE(J) .EQ. 5) THEN ! note: this option is similar to OP3 but for a periodic demand
             ! Note x1 and x4 in radian (0 to pi/2), not degree, this part can be shorthen
-            IF (MOD(I,365) .LE. 31) THEN !jan
+            IF (CRTDATE .LE. 31) THEN !jan
                 X1(J) = OP5X1(J,1)
                 X2(J) = OP5X2(J,1)
                 X3(J) = OP5X3(J,1)
                 X4(J) = OP5X4(J,1)
                 Demand(J) = DEMAND5(J,1)
-            ELSE IF (MOD(I,365) .LE. 59) THEN ! feb
+            ELSE IF (CRTDATE .LE. 59) THEN ! feb
                 X1(J) = OP5X1(J,2)
                 X2(J) = OP5X2(J,2)
                 X3(J) = OP5X3(J,2)
                 X4(J) = OP5X4(J,2)
                 Demand(J) = DEMAND5(J,2)
-            ELSE IF (MOD(I,365) .LE. 90) THEN ! mar
+            ELSE IF (CRTDATE .LE. 90) THEN ! mar
                 X1(J) = OP5X1(J,3)
                 X2(J) = OP5X2(J,3)
                 X3(J) = OP5X3(J,3)
                 X4(J) = OP5X4(J,3)
                 Demand(J) = DEMAND5(J,3)
-            ELSE IF (MOD(I,365) .LE. 120) THEN ! apr
+            ELSE IF (CRTDATE .LE. 120) THEN ! apr
                 X1(J) = OP5X1(J,4)
                 X2(J) = OP5X2(J,4)
                 X3(J) = OP5X3(J,4)
                 X4(J) = OP5X4(J,4)
                 Demand(J) = DEMAND5(J,4)
-            ELSE IF (MOD(I,365) .LE. 151) THEN ! may
+            ELSE IF (CRTDATE .LE. 151) THEN ! may
                 X1(J) = OP5X1(J,5)
                 X2(J) = OP5X2(J,5)
                 X3(J) = OP5X3(J,5)
                 X4(J) = OP5X4(J,5)
                 Demand(J) = DEMAND5(J,5)
-            ELSE IF (MOD(I,365) .LE. 181) THEN ! jun
+            ELSE IF (CRTDATE .LE. 181) THEN ! jun
                 X1(J) = OP5X1(J,6)
                 X2(J) = OP5X2(J,6)
                 X3(J) = OP5X3(J,6)
                 X4(J) = OP5X4(J,6)
                 Demand(J) = DEMAND5(J,6)
-            ELSE IF (MOD(I,365) .LE. 212) THEN ! jul
+            ELSE IF (CRTDATE .LE. 212) THEN ! jul
                 X1(J) = OP5X1(J,7)
                 X2(J) = OP5X2(J,7)
                 X3(J) = OP5X3(J,7)
                 X4(J) = OP5X4(J,7)
                 Demand(J) = DEMAND5(J,7)
-            ELSE IF (MOD(I,365) .LE. 243) THEN ! aug
+            ELSE IF (CRTDATE .LE. 243) THEN ! aug
                 X1(J) = OP5X1(J,8)
                 X2(J) = OP5X2(J,8)
                 X3(J) = OP5X3(J,8)
                 X4(J) = OP5X4(J,8)
                 Demand(J) = DEMAND5(J,8)
-            ELSE IF (MOD(I,365) .LE. 273) THEN ! sep
+            ELSE IF (CRTDATE .LE. 273) THEN ! sep
                 X1(J) = OP5X1(J,9)
                 X2(J) = OP5X2(J,9)
                 X3(J) = OP5X3(J,9)
                 X4(J) = OP5X4(J,9)
                 Demand(J) = DEMAND5(J,9)
-            ELSE IF (MOD(I,365) .LE. 304) THEN ! oct
+            ELSE IF (CRTDATE .LE. 304) THEN ! oct
                 X1(J) = OP5X1(J,10)
                 X2(J) = OP5X2(J,10)
                 X3(J) = OP5X3(J,10)
                 X4(J) = OP5X4(J,10)
                 Demand(J) = DEMAND5(J,10)
                 Demand(J) = DEMAND5(J,10)
-            ELSE IF (MOD(I,365) .LE. 334) THEN ! nov
+            ELSE IF (CRTDATE .LE. 334) THEN ! nov
                 X1(J) = OP5X1(J,11)
                 X2(J) = OP5X2(J,11)
                 X3(J) = OP5X3(J,11)

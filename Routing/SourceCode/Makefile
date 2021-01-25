@@ -30,6 +30,7 @@ OBJECTS=	rout.o 			\
                 reservoir.o		\
                 write_routines.o	\
                 unit_hyd_routines.o	\
+                sub_function.o	\
                 init_routines.o		
 
 exe:		$(OBJECTS)
@@ -39,6 +40,7 @@ rout.o:				rout.f
 reservoir.o:			reservoir.f
 write_routines.o:		write_routines.f
 unit_hyd_routines.o:		unit_hyd_routines.f
+sub_function.o:			sub_function.f
 init_routines.o:		init_routines.f
 
 clean:
