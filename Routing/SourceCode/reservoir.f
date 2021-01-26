@@ -699,11 +699,11 @@ c       Declare variables
         INTEGER     IROW, CURRENTYEAR
         INTEGER     NO_OF_BOX(200)
         INTEGER     XNE, YNE
-        INTEGER     I, J, K, L, NO_STAS
+        INTEGER     I, J, K, L, NO_STAS, CAL_MONTH
         INTEGER     NO_OF_ROW(200)
         INTEGER     RULE(200), WITHIRRIGATION(200)
         INTEGER     STARTDAY(200)
-        INTEGER     DPREC, RESORDER, NOOFROW
+        INTEGER     DPREC, RESORDER, NOOFROW, CRTDATE
         REAL        UH_S(PMAX,KE+UH_DAY-1,200)
         REAL        TRVLTIME(200)
         REAL        BASE(DAYS), RUNO(DAYS), FLOW(DAYS)
@@ -723,7 +723,7 @@ c       Declare variables
         REAL        OP2(200,DAYS) ! pre-defined time series data
         REAL        X1(200), X2(200), X3(200), X4(200)	! operating rule
         REAL        SEEPAGE(200), INFILTRATION(200), Demand(200)
-        REAL        CRTDATE, TEMPO
+        REAL        TEMPO
         REAL        RESLV(200,12), OP5X1(200,12), OP5X2(200,12), OP5X3(200,12), OP5X4(200,12), DEMAND5(200,12)
         REAL        IRRIGATION(200,DAYS)
         REAL        KFACTOR
@@ -833,7 +833,7 @@ c       Initiate reservoir parameters
             FLOWIN(J,I) = RESFLOWS(J,I)
 c           Calculate the designed water level
 c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating rules: - 4 pre-defined time-series data - 5 12 month operating rule
-            CRTDATE = 1.0* mod(I,365)+(START_MO-1)*30						! approximate
+            CRTDATE = INT(1.0* mod(I,365)+(START_MO-1)*30)						! approximate
             IF ((RULE(J) .EQ. 1) .or. (RULE(J) .EQ. 2)) THEN   ! (Options 1 and 2: rule curves)
                 IF (CURRENTYEAR<OPEYEAR(J)) THEN
                     FLOWOUT(J,I) = FLOWIN(J,I)
@@ -876,31 +876,7 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
                 END IF
                 DESIGNWL = DESIGNWL + (HMIN(J) - HRESERMIN(J))
             ELSE
-                IF (CRTDATE .LE. 31) THEN !jan
-                    DESIGNWL = RESLV(J,1)
-                ELSE IF (CRTDATE .LE. 59) THEN ! feb
-                    DESIGNWL = RESLV(J,2)
-                ELSE IF (CRTDATE .LE. 90) THEN ! mar
-                    DESIGNWL = RESLV(J,3)
-                ELSE IF (CRTDATE .LE. 120) THEN ! apr
-                    DESIGNWL = RESLV(J,4)
-                ELSE IF (CRTDATE .LE. 151) THEN ! may
-                    DESIGNWL = RESLV(J,5)
-                ELSE IF (CRTDATE .LE. 181) THEN ! jun
-                    DESIGNWL = RESLV(J,6)
-                ELSE IF (CRTDATE .LE. 212) THEN ! jul
-                    DESIGNWL = RESLV(J,7)
-                ELSE IF (CRTDATE .LE. 243) THEN ! aug
-                    DESIGNWL = RESLV(J,8)
-                ELSE IF (CRTDATE .LE. 273) THEN ! sep
-                    DESIGNWL = RESLV(J,9)
-                ELSE IF (CRTDATE .LE. 304) THEN ! oct
-                    DESIGNWL = RESLV(J,10)
-                ELSE IF (CRTDATE .LE. 334) THEN ! nov
-                    DESIGNWL = RESLV(J,11)
-                ELSE ! dec
-                    DESIGNWL = RESLV(J,12)
-                END IF
+                DESIGNWL = RESLV(J,CAL_MONTH(CRTDATE))
                 DESIGNWL = DESIGNWL - H0(J)
             END IF
             HTK(J,I) = DESIGNWL + H0(J)													! water head
@@ -910,12 +886,7 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
      &          >(DESIGNWL* VRESER(J)) /(HRESERMAX(J)-H0(J))) THEN
                     VOL(J,I+1) = VOL(J,I) + FLOWIN(J,I)*24*3.6-QRESER(J)*24*3.6
                     FLOWOUT(J,I) = QRESER(J)
-                    IF ((VOL(J,I)+FLOWIN(J,I)*24*3.6 -(QRESER(J)+IRRIGATION(J,I))*24*3.6)					! Case 2b - Irrigation
-     &              >(DESIGNWL* VRESER(J))/(HRESERMAX(J)-H0(J))) THEN
-                        VOL(J,I+1) = VOL(J,I+1) - IRRIGATION(J,I)*24*3.6
-                    ELSE
-                        VOL(J,I+1)=(DESIGNWL*VRESER(J))/(HRESERMAX(J)-H0(J))
-                    END IF
+                    VOL(J,I+1)=(DESIGNWL*VRESER(J))/(HRESERMAX(J)-H0(J))
                 ELSE																	! Case 1
                     VOL(J,I+1)=(DESIGNWL*VRESER(J))/(HRESERMAX(J)-H0(J))
                     FLOWOUT(J,I)=(VOL(J,I)-VOL(J,I+1))/24/3.6 + FLOWIN(J,I)
@@ -924,18 +895,11 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
             ELSE																		! Zone 2
                 IF ((VOL(J,I)+FLOWIN(J,I)*24*3.6)>((DESIGNWL* VRESER(J))				! Case 2
      &           /(HRESERMAX(J)-H0(J)))) THEN
-                    VOL(J,I+1)=(DESIGNWL * VRESER(J))/(HRESERMAX(J)
-     &              -H0(J))
+                    VOL(J,I+1)=(DESIGNWL * VRESER(J))/(HRESERMAX(J)-H0(J))
                     FLOWOUT(J,I)=FLOWIN(J,I)-(VOL(J,I+1)-VOL(J,I))/24/3.6
                     IF (FLOWOUT(J,I)>QRESER(J)) THEN
                         VOL(J,I+1)=VOL(J,I+1)+(FLOWOUT(J,I)-QRESER(J))*24*3.6
                         FLOWOUT(J,I) = QRESER(J)
-                    END IF
-                    IF ((VOL(J,I)+FLOWIN(J,I)*24*3.6-(QRESER(J)+IRRIGATION(J,I))*24*3.6)>((DESIGNWL* VRESER(J))				! Case 2
-     &               /(HRESERMAX(J)-H0(J)))) THEN
-                        VOL(J,I+1)=VOL(J,I+1)-IRRIGATION(J,I)
-                    ELSE
-                        VOL(J,I+1)=(DESIGNWL*VRESER(J))/(HRESERMAX(J)-H0(J))
                     END IF
                     GOTO 123
                 ELSE																	! Case 1 (this case covers Zone 1 + Zone 2 case 1)
@@ -971,7 +935,7 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
             IF (FLOWOUT(J,I)>QRESER(J)) THEN			! double check just in case users chose unrealistic x1 and x4
                 FLOWOUT(J,I) = QRESER(J)
             END IF
-            VOL(J,I+1) = VOL(J,I) + (FLOWIN(J,I)-FLOWOUT(J,I)-IRRIGATION(J,I))*24*3.6
+            VOL(J,I+1) = VOL(J,I) + (FLOWIN(J,I)-FLOWOUT(J,I))*24*3.6
             GOTO 123
         ELSE IF (RULE(J) .EQ. 4) THEN! pre-defined time series (Option 4)
             IF ((OP2(J,I+STARTDAY(J)) .GT. QRESER(J)) .AND. (VOL(J,I) .LT. VRESER(J))) THEN
@@ -982,84 +946,15 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
             ELSE
                 FLOWOUT(J,I) = OP2(J,I+STARTDAY(J))
             END IF
-            VOL(J,I+1) = VOL(J,I) + (FLOWIN(J,I)-FLOWOUT(J,I)-IRRIGATION(J,I))*24*3.6
+            VOL(J,I+1) = VOL(J,I) + (FLOWIN(J,I)-FLOWOUT(J,I))*24*3.6
             GOTO 123
         ELSE IF (RULE(J) .EQ. 5) THEN ! note: this option is similar to OP3 but for a periodic demand
             ! Note x1 and x4 in radian (0 to pi/2), not degree, this part can be shorthen
-            IF (CRTDATE .LE. 31) THEN !jan
-                X1(J) = OP5X1(J,1)
-                X2(J) = OP5X2(J,1)
-                X3(J) = OP5X3(J,1)
-                X4(J) = OP5X4(J,1)
-                Demand(J) = DEMAND5(J,1)
-            ELSE IF (CRTDATE .LE. 59) THEN ! feb
-                X1(J) = OP5X1(J,2)
-                X2(J) = OP5X2(J,2)
-                X3(J) = OP5X3(J,2)
-                X4(J) = OP5X4(J,2)
-                Demand(J) = DEMAND5(J,2)
-            ELSE IF (CRTDATE .LE. 90) THEN ! mar
-                X1(J) = OP5X1(J,3)
-                X2(J) = OP5X2(J,3)
-                X3(J) = OP5X3(J,3)
-                X4(J) = OP5X4(J,3)
-                Demand(J) = DEMAND5(J,3)
-            ELSE IF (CRTDATE .LE. 120) THEN ! apr
-                X1(J) = OP5X1(J,4)
-                X2(J) = OP5X2(J,4)
-                X3(J) = OP5X3(J,4)
-                X4(J) = OP5X4(J,4)
-                Demand(J) = DEMAND5(J,4)
-            ELSE IF (CRTDATE .LE. 151) THEN ! may
-                X1(J) = OP5X1(J,5)
-                X2(J) = OP5X2(J,5)
-                X3(J) = OP5X3(J,5)
-                X4(J) = OP5X4(J,5)
-                Demand(J) = DEMAND5(J,5)
-            ELSE IF (CRTDATE .LE. 181) THEN ! jun
-                X1(J) = OP5X1(J,6)
-                X2(J) = OP5X2(J,6)
-                X3(J) = OP5X3(J,6)
-                X4(J) = OP5X4(J,6)
-                Demand(J) = DEMAND5(J,6)
-            ELSE IF (CRTDATE .LE. 212) THEN ! jul
-                X1(J) = OP5X1(J,7)
-                X2(J) = OP5X2(J,7)
-                X3(J) = OP5X3(J,7)
-                X4(J) = OP5X4(J,7)
-                Demand(J) = DEMAND5(J,7)
-            ELSE IF (CRTDATE .LE. 243) THEN ! aug
-                X1(J) = OP5X1(J,8)
-                X2(J) = OP5X2(J,8)
-                X3(J) = OP5X3(J,8)
-                X4(J) = OP5X4(J,8)
-                Demand(J) = DEMAND5(J,8)
-            ELSE IF (CRTDATE .LE. 273) THEN ! sep
-                X1(J) = OP5X1(J,9)
-                X2(J) = OP5X2(J,9)
-                X3(J) = OP5X3(J,9)
-                X4(J) = OP5X4(J,9)
-                Demand(J) = DEMAND5(J,9)
-            ELSE IF (CRTDATE .LE. 304) THEN ! oct
-                X1(J) = OP5X1(J,10)
-                X2(J) = OP5X2(J,10)
-                X3(J) = OP5X3(J,10)
-                X4(J) = OP5X4(J,10)
-                Demand(J) = DEMAND5(J,10)
-                Demand(J) = DEMAND5(J,10)
-            ELSE IF (CRTDATE .LE. 334) THEN ! nov
-                X1(J) = OP5X1(J,11)
-                X2(J) = OP5X2(J,11)
-                X3(J) = OP5X3(J,11)
-                X4(J) = OP5X4(J,11)
-                Demand(J) = DEMAND5(J,11)
-            ELSE ! dec
-                X1(J) = OP5X1(J,12)
-                X2(J) = OP5X2(J,12)
-                X3(J) = OP5X3(J,12)
-                X4(J) = OP5X4(J,12)
-                Demand(J) = DEMAND5(J,12)
-            END IF
+            X1(J) = OP5X1(J,CAL_MONTH(CRTDATE))
+            X2(J) = OP5X2(J,CAL_MONTH(CRTDATE))
+            X3(J) = OP5X3(J,CAL_MONTH(CRTDATE))
+            X4(J) = OP5X4(J,CAL_MONTH(CRTDATE))
+            Demand(J) = DEMAND5(J,CAL_MONTH(CRTDATE))
             IF (VOL(J,I) < VDEAD(J)) THEN ! below dead water level
                 FLOWOUT(J,I) = 0																					! case 1
             ELSE IF (VOL(J,I) .LE. X2(J)) THEN ! hedging
@@ -1086,7 +981,7 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
             IF (FLOWOUT(J,I)>QRESER(J)) THEN			! double check just in case users chose unrealistic x1 and x4
                 FLOWOUT(J,I) = QRESER(J)
             END IF
-            VOL(J,I+1) = VOL(J,I) + (FLOWIN(J,I)-FLOWOUT(J,I)-IRRIGATION(J,I))*24*3.6
+            VOL(J,I+1) = VOL(J,I) + (FLOWIN(J,I)-FLOWOUT(J,I))*24*3.6
             GOTO 123
  123    END IF
         ! Check if there are any negative values
@@ -1098,6 +993,12 @@ c           Note RULE = 1: simplified rule curve - 2: rule curve - 3: operating 
         END IF
         IF (VOL(I,J)<0)THEN ! Not allow dropping below the minimum water level (mostly due to evaporation)
             VOL(I,J)=0
+        END IF
+c       Remote water for irrigation
+        IF (FLOWOUT(J,I)>=IRRIGATION(J,I)) THEN
+            FLOWOUT(J,I) = FLOWOUT(J,I) - IRRIGATION(J,I)
+        ELSE
+            FLOWOUT(J,I) = 0
         END IF
         ! Calculate energy production
         IF (VOL(J,I+1)<=VRESER(J)) THEN
@@ -1160,3 +1061,36 @@ c       Check the neccesity to spill water
       END
 C     END OF FILE
 C************************************************************************************************************************************************************************************
+
+C************************************************************************************************************************************************************************************
+C       Convert from day to month
+C************************************************************************************************************************************************************************************
+        INTEGER FUNCTION CAL_MONTH(CRTDATE)
+        INTEGER CRTDATE
+        IF (CRTDATE .LE. 31) THEN !jan
+            CAL_MONTH = 1
+        ELSE IF (CRTDATE .LE. 59) THEN ! feb
+            CAL_MONTH = 2
+        ELSE IF (CRTDATE .LE. 90) THEN ! mar
+            CAL_MONTH = 3
+        ELSE IF (CRTDATE .LE. 120) THEN ! apr
+            CAL_MONTH = 4
+        ELSE IF (CRTDATE .LE. 151) THEN ! may
+            CAL_MONTH = 5
+        ELSE IF (CRTDATE .LE. 181) THEN ! jun
+            CAL_MONTH = 6
+        ELSE IF (CRTDATE .LE. 212) THEN ! jul
+            CAL_MONTH = 7
+        ELSE IF (CRTDATE .LE. 243) THEN ! aug
+            CAL_MONTH = 8
+        ELSE IF (CRTDATE .LE. 273) THEN ! sep
+            CAL_MONTH = 9
+        ELSE IF (CRTDATE .LE. 304) THEN ! oct
+            CAL_MONTH = 10
+        ELSE IF (CRTDATE .LE. 334) THEN ! nov
+            CAL_MONTH = 11
+        ELSE ! dec
+            CAL_MONTH = 12
+        END IF
+        RETURN
+        END
