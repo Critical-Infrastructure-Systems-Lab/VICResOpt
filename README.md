@@ -21,6 +21,7 @@ VIC-ResOpt has been tested on Linux Ubuntu 14.04 LTS (Trusty Tahr) and 16.04 (Xe
 
 ### Major Update
 
+* 12 Jun 2022: fix lat - lon bug for example files
 * 28 Dec 2020: fix dead storage bug; add water withdrawal (permanent loss) due to irrigation activities.
 * 17 May 2020: add multicalieNSGAII.py for multi-site calibration.
 * 28 Mar 2020: add viccall.py to call VIC and Rout together; add autocaliSCE.py for automatic calibration with SCE-UA.
