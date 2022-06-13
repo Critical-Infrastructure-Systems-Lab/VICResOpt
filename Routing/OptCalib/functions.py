@@ -166,16 +166,9 @@ def viccall(soildata,rank,order,number_of_days,VIC_vars,reservoirs,maximum_no_re
     # Change the order of X and Y in the file name
     files = [f for f in os.listdir("../Rainfall-runoffSetup/Results/") if os.path.isfile(os.path.join("../Rainfall-runoffSetup/Results/",f))]
     for file in files:
-        if (len(file)>=22):
-            if (len(file)==22):
-                coorX = file[7:14]
-                coorY = file[15:22]
-            else:
-                coorX = file[7:15]
-                coorY = file[16:23]
-            newfile = "../RoutingSetup/input/fluxes_"+coorY+"_"+coorX
-            file = "../Rainfall-runoffSetup/Results/" + file
-            os.rename(file,newfile)
+        newfile = "../RoutingSetup/input/" + file
+        file = "../Rainfall-runoffSetup/Results/" + file
+        os.rename(file,newfile)
     # Run routing model
     os.chdir('../Routing/SourceCode')
     os.system('rm *.uh_s')

@@ -137,16 +137,9 @@ def viccall(vars):
     os.system('./vicNl -g ../Rainfall-runoffSetup/globalparam.txt') 	 			# Modify when needed
     files = [f for f in os.listdir("../Rainfall-runoffSetup/Results") if os.path.isfile(os.path.join("../Rainfall-runoffSetup/Results",f))]
     for file in files:             													# Change the name of VIC file (convert from X - Y to Y - X)
-        if (len(file)>=22):
-            if (len(file)==22):
-                coorX = file[7:14]
-                coorY = file[15:22]
-            else:
-                coorX = file[7:15]
-                coorY = file[16:23]
-            newfile = "../RoutingSetup/input/fluxes_"+coorY+"_"+coorX				# Modify when needed
-            file = "../Rainfall-runoffSetup/Results/" + file						# Modify when needed (this is only correct if you use the provided VIC version)
-            os.rename(file,newfile)
+        newfile = "../RoutingSetup/input/" + file				                    # Modify when needed
+        file = "../Rainfall-runoffSetup/Results/" + file						    # Modify when needed (this is only correct if you use the provided VIC version)
+        os.rename(file,newfile)
 
     # Run routing model																# Modify when needed
     os.chdir('../Routing/SourceCode')
