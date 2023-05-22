@@ -145,7 +145,7 @@ VIC-ResOpt development is supported by Singapore's Ministry of Education (MoE) v
 
 ### Contact
 
-For questions and feedback related to VIC-ResOpt—and requests to fix possible bugs—please send an email to thanhiwer@gmail.com (Thanh Dang). Alternatively, you may reach out to stefano_galelli@sutd.edu.sg (Stefano Galelli).
+For questions and feedback related to VIC-ResOpt—and requests to fix possible bugs—please send an email to ddt21@usf.edu (Thanh Dang). Alternatively, you may reach out to stefano_galelli@sutd.edu.sg (Stefano Galelli).
 
 ### Citation
 
