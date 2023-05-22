@@ -9,7 +9,7 @@ The Variable Infiltration Capacity (VIC) model is a popular large-scale hydrolog
 
 ### Prerequisites
 
-VIC-ResOpt is based on VIC 4.2 -— the last release of the VIC Version 4 development track, which has a large number of active users. The key difference between VIC 4.2 and VIC-ResOpt stands in the routing module (written in FORTRAN), which has been modified to account for the presence and operations of water reservoirs. The two models share the same rainfall-runoff module (written in C). Both VIC and VIC-ResOpt have been developed for Linux and Unix platforms, and they require the GNU and G77 compilers. 
+VIC-ResOpt is based on VIC 4.2 -â€” the last release of the VIC Version 4 development track, which has a large number of active users. The key difference between VIC 4.2 and VIC-ResOpt stands in the routing module (written in FORTRAN), which has been modified to account for the presence and operations of water reservoirs. The two models share the same rainfall-runoff module (written in C). Both VIC and VIC-ResOpt have been developed for Linux and Unix platforms, and they require the GNU and G77 compilers. 
 
 The optimization of the rule curves/operating rules, model sensitivity analysis, and automatic calibration of the model parameters can be executed on both Python 2.7x and 3.x. The three functionalities require the following Python packages: (i) Numpy, (ii) os, (iii) multiprocessing, (iv) scipy, (v) numba, (vi) Matplotlib (optional for plotting), and (vii) plotly (optional for parallel coordinate plots). 
 
@@ -135,7 +135,7 @@ Users can parallelize modelling steps in optimization, sensitivity analyses, and
 
 VIC-ResOpt is demonstrated via two case studies
 
-- A ‘toy’ case study, that is, a small catchment with dimension of 5 x 5 (cell) (see *Rainfall-runoffSetup* and *RoutingSetup* folders). The representation of water reservoirs is exemplified in the file *reservoirlocation.txt*, which contains three reservoirs (Reservoir 1, Reservoir 2, and Reservoir 3; IDs 1, 2 and 3). The files containing all specifications of these reservoirs are named *res1.txt* (rule curve),*res2.txt* (operating rule), and *res3.txt* (pre-defined release).
+- A â€˜toyâ€™ case study, that is, a small catchment with dimension of 5 x 5 (cell) (see *Rainfall-runoffSetup* and *RoutingSetup* folders). The representation of water reservoirs is exemplified in the file *reservoirlocation.txt*, which contains three reservoirs (Reservoir 1, Reservoir 2, and Reservoir 3; IDs 1, 2 and 3). The files containing all specifications of these reservoirs are named *res1.txt* (rule curve),*res2.txt* (operating rule), and *res3.txt* (pre-defined release).
 
 - The case study of the Upper Chao Phraya river basin in Thailand (see *Rainfall-runoffSetupChaoPhraya* and *RoutingSetupChaoPhraya*). The basin, which has a drainage area of 110,000 km2, is modelled by using VIC-ResOpt with 4,426 cells (0.0625 x 0.0625 degree). Rainfall time series data are from the Asian PrecipitationHighly Resolved Observational Data Integration Towards Evaluation of Water Resources (APHRODITE) product which is developed based on multiple-gauging stations. Other climatic forcings, including maximum/minimum temperature and wind speeds, are derived from the NCEP Climate Forecast System Reanalysis (CFSR). These datasets are available at different spatial resolutions and are interpolated to the resolution of the adopted VIC cell size by the bilinear interpolation method. This method calculates a grid-based value based on its four neighbouring values, considering distance weighting. Land cover data which are obtained from the Global Land Cover Project (GLCP) database, and soil characteristics are obtained from the Harmonized World Soil Database (HWSD). These datasets have a spatial resolution of 30 arcseconds (around 1 km), so they are rescaled to the resolution of VIC using the majority interpolation method. This method assigns the most frequent values of the pixels inside the search space for the pixel with the unknown value. Due to the large size of climate forcing data and limited available storage of this repository, we do not upload the forcing input. However, these data are freely available on the website of the providers or they can be also replaced by other products. 
 
@@ -145,10 +145,12 @@ VIC-ResOpt development is supported by Singapore's Ministry of Education (MoE) v
 
 ### Contact
 
-For questions and feedback related to VIC-ResOpt—and requests to fix possible bugs—please send an email to thanhiwer@gmail.com (Thanh Dang), Resilient Water Systems Group, Singapore University of Technology and Design, Singapore.
+For questions and feedback related to VIC-ResOptâ€”and requests to fix possible bugsâ€”please send an email to thanhiwer@gmail.com (Thanh Dang). Alternatively, you may reach out to stefano_galelli@sutd.edu.sg (Stefano Galelli).
 
 ### Citation
 
-If you use VIC-ResOpt, please cite the following paper:
+If you use VIC-Res, please cite the following papers:
 
-T.D. Dang, T.D., Vu, A.K. Chowdhury, and S. Galelli. A software package for the representation and optimization of water reservoir operations in the VIC hydrologic model. Environmental Modeling & Software, 2020, 126: 104673.
+*Dang, T.D., Chowdhury, AFMK, Galelli, S. (2020) On the representation of water reservoir storage and operations in large-scale hydrological models: implications on model parameterization and climate change impact assessments. Hydrology and Earth System Sciences, 24, 397â€“416. [Link](https://hess.copernicus.org/articles/24/397/2020/hess-24-397-2020.html)
+
+*Dang, T.D., Vu, T.D. Chowdhury, K., Galelli, S. (2020) A software package for the representation and optimization of water reservoir operations in the VIC hydrologic model. Environmental Modelling & Software, 126, 104673. [Link](https://www.sciencedirect.com/science/article/abs/pii/S1364815219310291?via%3Dihub)
