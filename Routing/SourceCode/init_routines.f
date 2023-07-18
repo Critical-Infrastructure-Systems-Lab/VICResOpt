@@ -1,3 +1,4 @@
+c     18/07/2023 correct an error related to NORESERVOIRS when running routing with multiple outlet (Line 98) - Thank Bruno Invernizzi (Politechnico di Milano)
 c     SUBROUTINES FOR INITIALIZATION (roughly)
 
 C************************************************************************************************************************************************************************************
@@ -94,6 +95,7 @@ C*******************************************************************************
       INTEGER RES_DIRECT(200,3)
       INTEGER RESER(NCOL,NROW)
       INTEGER CELL_OF_RES
+      NORESERVOIRS = 0
       NORESERVOIRS = NORESERVOIRS + 1
       RES_DIRECT(NORESERVOIRS,1) = NORESERVOIRS
       NO_OF_BOX(NORESERVOIRS) = 0
