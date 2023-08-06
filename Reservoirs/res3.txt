@@ -1,0 +1,11 @@
+Hmax(M)	Hmin(M)	Scap(1000M3)	Sd(1000M3)	Hturbine(M)	Qdesign (M3/s)	Year	Sinitial(1000M3)	Name
+626.000000	500.000000	1000	100	698.000000	25.000000	1996	0	Reservoir3
+SEEPAGE	INFILTRATION
+0	0
+IRRIGATION
+0
+DUMMY
+OPERATION STRATEGY
+4
+RELEASE DATA (OP4 release data)
+../../Reservoirs/releasedata3.txt
