@@ -1,0 +1,27 @@
+# Configuration file: automatic calibration for the Variable Infiltration Capacity model based on Multi-Objective Evolutionary Algorthms (MOEAs)
+# Simulation parameters
+2100	# Number of simulation days
+365	# Number of days for the spinning period
+1000	# Number of function evaluations
+2	# Population size
+1	# Number of cores
+# VIC model parameters (1 - on; 0 - off)
+1	# Variable infiltration curve parameter b
+1	# Fraction of Dmax where non-linear baseflow begin Ds
+1	# Maximum velocity of baseflow Dmax
+1	# Fraction of maximum soil moisture where non-linear baseflow occurs Ws
+0	# Exponent of the nonlinear part of the baseflow curve c
+1	# Thickness of top soil moisture layer Depth 1
+1	# Thickness of 2nd soil moisture layer Depth 2
+0	# Thickness of 3rd soil mositure layer Depth 3
+0	# Wave velocity in the channel routing (m/s)
+0	# Diff diffusivity in the channel routing (m2/s)
+# Objective functions (1 - on; 0 - off)
+1	# NSE
+1	# TRMSE
+0	# MSDE
+0	# ROCE
+# Number of gauging station
+2	# There should be gauged file called SITE1.csv, SITE2.csv, etc 
+# Number of zones
+2	# Zone means group of cells in VIC

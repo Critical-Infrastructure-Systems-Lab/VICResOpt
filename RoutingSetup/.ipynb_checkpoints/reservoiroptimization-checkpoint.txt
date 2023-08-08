@@ -1,0 +1,16 @@
+# Configuration file: reservoir operation optimization for VIC model based on Multi-Objective Evolutionary Algorthms (MOEAs)
+# Simulation parameters
+2130	# Maximum number of simulation days (N)
+365	# Number of days for the spinning period
+2000	# Number of function evaluations
+20	# Population size
+1	# Number of computer cores
+# Objective functions (1 - consider; 0 - not consider)
+# [Daily water deficit] [Daily hydropower] [Firm hydropower] [Peak flow] [Above predefined flood threshold] [Deviation from pre-defined water leve]
+1 1 0 1 1 0
+# Reservoirs
+1 2
+../RoutingSetup/waterdemand.txt		# Water demand file ((no of res+1) x N values in m3/s), including water demand for each reservoir and the basin outlet
+3000					# Observed peak flow (m3/s)
+3000					# Flood threshold (m3/s)
+../RoutingSetup/reservoirwl.txt		# Pre-defined water levels of reservoirs (365 values in m)

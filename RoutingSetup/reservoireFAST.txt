@@ -1,0 +1,21 @@
+# Configuration file: sensitivity analysis for VIC model based on extended Fourier Amplitutde Sensitivity Test (eFAST)
+# Simulation parameters
+2130		# Number of simulation days
+365		# Number of days for the spinning period
+1		# Number of cores
+# VIC model parameters (1 - on; 0 - off)
+1		# Variable infiltration curve parameter b
+0		# Fraction of Dmax where non-linear baseflow begin Ds
+1		# Maximum velocity of baseflow Dmax (mm/day)
+0		# Fraction of maximum soil moisture where non-linear baseflow occurs Ws
+0		# Exponent of the nonlinear part of the baseflow curve c
+1		# Thickness of top soil moisture layer Depth 1 (m)
+1		# Thickness of 2nd soil layer Depth 2 (m)
+0		# Thickness of 3rd soil layer Depth 3 (m)
+0		# Wave velocity in the channel routing (m/s)
+0		# Diff diffusivity in the channel routing (m2/s)
+# Reservoirs
+1
+# Fitness functions (1 - on; 0 - off)
+1		# NSE
+1		# TRMSE
